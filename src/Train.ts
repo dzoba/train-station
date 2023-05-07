@@ -24,7 +24,7 @@ export class Train extends Phaser.GameObjects.Container {
     // Store the provided maxSpeed value
     this.maxSpeed = maxSpeed;
 
-    const numRectangles = Phaser.Math.Between(2, 8);
+    const numRectangles = Phaser.Math.Between(2, 12);
     const rectangleWidth = 60;
     const rectangleHeight = 30;
 
