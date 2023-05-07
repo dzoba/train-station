@@ -1,19 +1,55 @@
 // TrainScene.ts
 import Phaser from 'phaser';
 import { Train } from './Train';
+import { Track } from './Track';
 
 export class TrainScene extends Phaser.Scene {
   private trains: Train[] = [];
+  private tracks: Track[] = [];
+  private tracksInUse: number[] = []; // Add this line
 
   constructor() {
     super('TrainScene');
   }
 
   public create(): void {
-    setInterval(() => {
-      const train = new Train(this, -50, this.scale.height / 2);
+    // Create tracks
+    const trackWidth = this.scale.width * 2;
+    // const trackWidth = this.game.canvas.width;
+
+    const trackCount = Math.floor(this.scale.height / (30 * 1.25));
+    for (let i = 0; i < trackCount; i++) {
+      const trackY = (this.scale.height / trackCount) * (i + 0.5);
+      const track = new Track(this, 0, trackY, trackWidth);
+      this.tracks.push(track);
+    }
+
+    const createTrain = () => {
+      const availableTracks = this.tracks
+        .map((_, index) => index)
+        .filter((index) => !this.tracksInUse.includes(index));
+
+      if (availableTracks.length === 0) {
+        const nextTrainTime = Phaser.Math.Between(3000, 10000);
+        setTimeout(createTrain, nextTrainTime);
+        return;
+      }
+
+      const randomTrackIndex = Phaser.Math.Between(0, availableTracks.length - 1);
+      const selectedTrackIndex = availableTracks[randomTrackIndex];
+      const selectedTrack = this.tracks[selectedTrackIndex];
+
+      this.tracksInUse.push(selectedTrackIndex);
+
+      const train = new Train(this, -50, selectedTrack.y);
       this.trains.push(train);
-    }, 10000);
+
+      const nextTrainTime = Phaser.Math.Between(3000, 15000);
+      setTimeout(createTrain, nextTrainTime);
+    };
+
+    createTrain();
+
   }
 
   public update(time: number, delta: number): void {
@@ -21,6 +57,13 @@ export class TrainScene extends Phaser.Scene {
       train.update(delta);
     });
 
-    this.trains = this.trains.filter((train) => train.x < this.scale.width + 50);
+    this.trains = this.trains.filter((train) => {
+      const outOfView = train.x >= this.scale.width + 50;
+      if (outOfView) {
+        const trackIndex = this.tracks.findIndex((track) => track.y === train.y + 15);
+        this.tracksInUse = this.tracksInUse.filter((index) => index !== trackIndex);
+      }
+      return !outOfView;
+    });
   }
 }

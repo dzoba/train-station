@@ -10,11 +10,15 @@ export const TrainStation: React.FC = () => {
   useEffect(() => {
     const config: Phaser.Types.Core.GameConfig = {
       type: Phaser.AUTO,
-      width,
-      height,
-      parent: 'train-station',
+      backgroundColor: 0x000000,
       scene: [TrainScene],
-      backgroundColor: '#000000', // Optional: Set the background color to black
+      scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        parent: 'game-container',
+        width: window.innerWidth, // Set the width to the window.innerWidth
+        height: window.innerHeight, // Set the height to the window.innerHeight
+      },
     };
 
     const game = new Phaser.Game(config);

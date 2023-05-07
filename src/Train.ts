@@ -13,9 +13,10 @@ export class Train extends Phaser.GameObjects.Rectangle {
   private state: TrainState;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
-    super(scene, x, y, 100, 30, 0x00ff00);
+    super(scene, x - 60, y, 100, 30, 0x00ff00);
     this.speed = 0;
     this.state = TrainState.Accelerating;
+    this.setOrigin(0, 0.5); // Add this line to set the train's origin to the center of its height
     scene.add.existing(this);
   }
 
@@ -31,9 +32,10 @@ export class Train extends Phaser.GameObjects.Rectangle {
         this.speed = Math.max(this.speed - 0.1 * delta, 0);
         if (this.speed === 0) {
           this.state = TrainState.Stopped;
+          const stopTime = Phaser.Math.Between(5000, 12000);
           setTimeout(() => {
             this.state = TrainState.Moving;
-          }, 5000);
+          }, stopTime);
         }
         break;
       case TrainState.Stopped:
