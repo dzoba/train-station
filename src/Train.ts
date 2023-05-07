@@ -15,10 +15,12 @@ export class Train extends Phaser.GameObjects.Container {
   private stoppingX: number;
   private trainState: TrainState;
   private rectangles: Phaser.GameObjects.Rectangle[] = [];
+  public trackNumber: number;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, maxSpeed: number) {
+  constructor(scene: Phaser.Scene, x: number, y: number, maxSpeed: number, trackNumber: number) {
     super(scene, x, y);
 
+    this.trackNumber = trackNumber;
     // Store the provided maxSpeed value
     this.maxSpeed = maxSpeed;
 

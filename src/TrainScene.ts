@@ -20,7 +20,7 @@ export class TrainScene extends Phaser.Scene {
     const trackCount = Math.floor(this.scale.height / (30 * 1.25));
     for (let i = 0; i < trackCount; i++) {
       const trackY = (this.scale.height / trackCount) * (i + 0.5);
-      const track = new Track(this, 0, trackY, trackWidth);
+      const track = new Track(this, 0, trackY, trackWidth, i);
       this.tracks.push(track);
     }
 
@@ -42,7 +42,7 @@ export class TrainScene extends Phaser.Scene {
       this.tracksInUse.push(selectedTrackIndex);
 
       const maxSpeed = Math.floor(Math.random() * 201) + 50;
-      const train = new Train(this, -50, selectedTrack.y + 15, maxSpeed);
+      const train = new Train(this, -50, selectedTrack.y + 15, maxSpeed, selectedTrack.trackNumber);
       this.trains.push(train);
 
       const nextTrainTime = Phaser.Math.Between(500, 2000);
@@ -61,8 +61,10 @@ export class TrainScene extends Phaser.Scene {
     this.trains = this.trains.filter((train) => {
       const outOfView = train.x >= this.scale.width + 50;
       if (outOfView) {
-        const trackIndex = this.tracks.findIndex((track) => track.y === train.y + 15);
+        const trackIndex = this.tracks.findIndex((track) => track.trackNumber === train.trackNumber);
+        console.log(' out of view trackIndex', trackIndex)
         this.tracksInUse = this.tracksInUse.filter((index) => index !== trackIndex);
+        console.log('tracksInUse', this.tracksInUse)
       }
       return !outOfView;
     });
