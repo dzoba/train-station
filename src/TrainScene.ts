@@ -41,10 +41,11 @@ export class TrainScene extends Phaser.Scene {
 
       this.tracksInUse.push(selectedTrackIndex);
 
-      const train = new Train(this, -50, selectedTrack.y);
+      const maxSpeed = Math.floor(Math.random() * 201) + 50;
+      const train = new Train(this, -50, selectedTrack.y + 15, maxSpeed);
       this.trains.push(train);
 
-      const nextTrainTime = Phaser.Math.Between(3000, 15000);
+      const nextTrainTime = Phaser.Math.Between(500, 2000);
       setTimeout(createTrain, nextTrainTime);
     };
 
@@ -52,7 +53,7 @@ export class TrainScene extends Phaser.Scene {
 
   }
 
-  public update(time: number, delta: number): void {
+  public update(_time: number, delta: number): void {
     this.trains.forEach((train) => {
       train.update(delta);
     });
