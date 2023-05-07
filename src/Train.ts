@@ -65,7 +65,15 @@ export class Train extends Phaser.GameObjects.Container {
         this.speed = Math.max(this.speed - 0.1 * delta, 0);
         if (this.speed === 0) {
           this.trainState = TrainState.Stopped;
-          const stopTime = Phaser.Math.Between(5000, 12000);
+          // 80% chance of normal length stop time
+          // 20% chance of long stop time
+          let stopTime;
+          if(Math.random() < 0.2) {
+            stopTime = Phaser.Math.Between(30000, 45000);
+          } else {
+            stopTime = Phaser.Math.Between(5000, 12000);
+          }
+            
           setTimeout(() => {
             this.trainState = TrainState.Moving;
           }, stopTime);
