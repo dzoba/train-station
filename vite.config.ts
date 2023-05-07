@@ -7,5 +7,8 @@ export default defineConfig({
   build: {
     outDir: 'docs',
   },
-  base: '/train-station/'
+  base: '/train-station/',
+  server: {
+    host: true
+  }
 })
