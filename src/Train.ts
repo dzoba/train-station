@@ -31,7 +31,7 @@ export class Train extends Phaser.GameObjects.Container {
     let color = 0x00df00;
     const random = Math.random();
     if(random < 0.01) {
-      color = 0x000000;
+      color = 0xffffff;
     } else if (random < 0.05 && random >= 0.01) {
       color = 0xfb0000;
     } else if (random < 0.15 && random >= 0.05) {
