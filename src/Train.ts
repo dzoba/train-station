@@ -28,8 +28,17 @@ export class Train extends Phaser.GameObjects.Container {
     const rectangleWidth = 60;
     const rectangleHeight = 30;
 
+    let color = 0x00df00;
+    const random = Math.random();
+    if(random < 0.01) {
+      color = 0x000000;
+    } else if (random < 0.05 && random >= 0.01) {
+      color = 0xfb0000;
+    } else if (random < 0.15 && random >= 0.05) {
+      color = 0x0000fe;
+    }
     for (let i = 0; i < numRectangles; i++) {
-      const rectangle = scene.add.rectangle(i * (rectangleWidth + 2), -rectangleHeight / 2, rectangleWidth, rectangleHeight, 0x00ff00);
+      const rectangle = scene.add.rectangle(i * (rectangleWidth + 2), -rectangleHeight / 2, rectangleWidth, rectangleHeight, color);
       this.add(rectangle);
       this.rectangles.push(rectangle);
     }
@@ -48,7 +57,7 @@ export class Train extends Phaser.GameObjects.Container {
       this.stoppingX = Phaser.Math.Between(0, this.scene.scale.width);
 
     }
-    
+
 
     scene.add.existing(this);
   }
@@ -68,12 +77,12 @@ export class Train extends Phaser.GameObjects.Container {
           // 80% chance of normal length stop time
           // 20% chance of long stop time
           let stopTime;
-          if(Math.random() < 0.2) {
+          if (Math.random() < 0.2) {
             stopTime = Phaser.Math.Between(30000, 45000);
           } else {
             stopTime = Phaser.Math.Between(5000, 12000);
           }
-            
+
           setTimeout(() => {
             this.trainState = TrainState.Moving;
           }, stopTime);
