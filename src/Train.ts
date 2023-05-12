@@ -52,12 +52,9 @@ export class Train extends Phaser.GameObjects.Container {
     // 20% chance of not stopping
     if (Math.random() < 0.2) {
       this.stoppingX = this.scene.scale.width + this.totalWidth;
-    }
-    else {
+    } else {
       this.stoppingX = Phaser.Math.Between(0, this.scene.scale.width);
-
     }
-
 
     scene.add.existing(this);
   }
